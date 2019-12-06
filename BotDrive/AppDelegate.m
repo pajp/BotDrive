@@ -19,6 +19,7 @@
 @property (weak) IBOutlet NSWindow *window;
 @property NSOperationQueue* ioQueue;
 @property NSURL* apiURL;
+@property NSURLSessionDataTask* cameraStreamTask;
 @end
 
 @interface DLLBotWindow : NSWindow
@@ -52,12 +53,9 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     ((DLLBotWindow*)self.window).appDelegate = self;
     self.apiURL = [NSURL URLWithString:@"http://raspberrypi3.local:4443/"];
-    NSURL* url = [NSURL URLWithString:@"stream.mjpg" relativeToURL:self.apiURL];
-    NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession* session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
-    NSURLSessionDataTask* tak = [session dataTaskWithURL:url];
-    [tak resume];
     [self sendRequst:[self liftRequestWithHeight:0]];
+    [self sendRequst:[self tiltRequestWithHeight:0.5]];
+    [self startStream];
 }
 
 - (NSURLRequest*)driveRequestWithLeftSpeed:(NSInteger) lspeed rightSpeed:(NSInteger) rspeed andDuration:(double) duration {
@@ -120,12 +118,25 @@
     [driveTask resume];
 }
 
+- (void)startStream {
+    [self.cameraStreamTask cancel];
+    NSURL* url = [NSURL URLWithString:@"stream.mjpg" relativeToURL:self.apiURL];
+    NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession* session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
+    NSURLSessionDataTask* tak = [session dataTaskWithURL:url];
+    [tak resume];
+    self.cameraStreamTask = tak;
+}
+
 - (IBAction)displayImageAction:(NSImageView*)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self sendRequst:[self imageRequestWIthImage:sender.image]];
     });
 }
 
+- (IBAction)refreshAction:(id)sender {
+    [self startStream];
+}
 
 - (IBAction)tiltAction:(NSSlider*)sender {
     NSLog(@"tilting to: %0.3f", sender.floatValue);
