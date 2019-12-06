@@ -750,10 +750,6 @@
                             <action selector="liftAction:" target="Voe-Tx-rLC" id="ZqX-jS-EKn"/>
                         </connections>
                     </slider>
-                    <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Dr-Vc-3sA">
-                        <rect key="frame" x="176" y="17" width="24" height="118"/>
-                        <sliderCell key="cell" alignment="left" maxValue="300" doubleValue="90" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="9ZY-Pp-hdR"/>
-                    </slider>
                     <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5fR-xT-Suv">
                         <rect key="frame" x="376" y="287" width="24" height="96"/>
                         <constraints>
@@ -765,6 +761,21 @@
                             <action selector="tiltAction:" target="Voe-Tx-rLC" id="d33-6H-omQ"/>
                         </connections>
                     </slider>
+                    <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Dr-Vc-3sA">
+                        <rect key="frame" x="176" y="17" width="24" height="118"/>
+                        <sliderCell key="cell" alignment="left" maxValue="300" doubleValue="90" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="9ZY-Pp-hdR"/>
+                    </slider>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LIb-Ks-NaR">
+                        <rect key="frame" x="385" y="17" width="134" height="38"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="128" id="IQB-ca-SFl"/>
+                            <constraint firstAttribute="height" constant="32" id="ZWD-f9-VlR"/>
+                        </constraints>
+                        <imageCell key="cell" selectable="YES" editable="YES" alignment="left" imageScaling="proportionallyDown" imageFrameStyle="grayBezel" id="8yj-4r-1DA"/>
+                        <connections>
+                            <action selector="displayImageAction:" target="Voe-Tx-rLC" id="seN-vN-PHz"/>
+                        </connections>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gA0-5W-B5f" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="1t2-H3-bqi"/>
@@ -776,7 +787,9 @@
                     <constraint firstItem="gA0-5W-B5f" firstAttribute="centerY" secondItem="LR2-8Y-FuB" secondAttribute="centerY" id="KJU-ed-bZI"/>
                     <constraint firstItem="Nnb-wn-g7V" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="KPV-zq-4HS"/>
                     <constraint firstItem="LR2-8Y-FuB" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="M3I-su-Kqz"/>
+                    <constraint firstAttribute="bottom" secondItem="LIb-Ks-NaR" secondAttribute="bottom" constant="20" id="N7Y-ZH-AOn"/>
                     <constraint firstItem="egv-Nd-jhy" firstAttribute="leading" secondItem="LR2-8Y-FuB" secondAttribute="trailing" constant="3" id="Qmz-xV-weI"/>
+                    <constraint firstAttribute="trailing" secondItem="LIb-Ks-NaR" secondAttribute="trailing" constant="20" id="bhY-Qc-fU0"/>
                     <constraint firstItem="5fR-xT-Suv" firstAttribute="leading" secondItem="KyF-Ly-dXN" secondAttribute="trailing" constant="8" id="e5G-vK-xzB"/>
                     <constraint firstItem="egv-Nd-jhy" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="30" id="gg2-Bq-vkT"/>
                     <constraint firstItem="LR2-8Y-FuB" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="k19-TD-1vD"/>

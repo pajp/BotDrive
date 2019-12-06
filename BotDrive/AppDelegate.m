@@ -75,6 +75,21 @@
     return driveRequest;
 }
 
+- (NSURLRequest*)imageRequestWIthImage:(NSImage*) image {
+    CGImageRef cgRef = [image CGImageForProposedRect:NULL
+                                             context:nil
+                                               hints:nil];
+    NSBitmapImageRep *newRep = [[NSBitmapImageRep alloc] initWithCGImage:cgRef];
+    [newRep setSize:[image size]];
+    NSData *pngData = [newRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+    
+    NSURL* url = [NSURL URLWithString:@"image" relativeToURL:self.apiURL];
+    NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL:url];
+    req.HTTPMethod = @"POST";
+    req.HTTPBody = pngData;
+    return req;
+}
+
 - (NSURLRequest*)liftRequestWithHeight:(float) height{
     NSURL* driveURL = [NSURL URLWithString:@"lift" relativeToURL:self.apiURL];
     NSMutableURLRequest* driveRequest = [NSMutableURLRequest requestWithURL:driveURL];
@@ -104,6 +119,14 @@
     }];
     [driveTask resume];
 }
+
+- (IBAction)displayImageAction:(NSImageView*)sender {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self sendRequst:[self imageRequestWIthImage:sender.image]];
+    });
+}
+
+
 - (IBAction)tiltAction:(NSSlider*)sender {
     NSLog(@"tilting to: %0.3f", sender.floatValue);
     [self sendRequst:[self tiltRequestWithHeight:sender.floatValue]];
