@@ -8,8 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
 
+@property int counter;
+@property (weak) IBOutlet NSImageView *cameraView;
+@property (weak) IBOutlet NSSlider *speedKnob;
 
 @end
 

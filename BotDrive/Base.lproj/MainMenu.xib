@@ -1,7 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11134" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11134"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -10,9 +11,11 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application" customClass="NSApplication"/>
-        <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModuleProvider="">
+        <customObject id="-3" userLabel="Application"/>
+        <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="cameraView" destination="Nnb-wn-g7V" id="SL1-NX-m6L"/>
+                <outlet property="speedKnob" destination="2Dr-Vc-3sA" id="lTc-JZ-V4b"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -677,16 +680,115 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="139" y="154"/>
         </menu>
-        <window title="BotDrive" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g">
+        <window title="BotDrive" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="QvC-M9-y7g" customClass="DLLBotWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="480" height="360"/>
+            <rect key="contentRect" x="335" y="390" width="536" height="401"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <view key="contentView" id="EiT-Mj-1SZ">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="360"/>
+                <rect key="frame" x="0.0" y="0.0" width="536" height="401"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nnb-wn-g7V">
+                        <rect key="frame" x="20" y="141" width="320" height="240"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="240" id="5VO-bA-c6r"/>
+                            <constraint firstAttribute="width" constant="320" id="DNU-zu-zq8"/>
+                        </constraints>
+                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="3WO-ns-KYK"/>
+                    </imageView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="egv-Nd-jhy">
+                        <rect key="frame" x="64" y="83" width="59" height="32"/>
+                        <buttonCell key="cell" type="push" title="🔼" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y1z-vy-9rC">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".AppleColorEmojiUI"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="upAction:" target="Voe-Tx-rLC" id="Ps1-CW-pa1"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P8B-ym-zT8">
+                        <rect key="frame" x="64" y="43" width="59" height="32"/>
+                        <buttonCell key="cell" type="push" title="🔽" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="kVg-fP-tvX">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".AppleColorEmojiUI"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="downAction:" target="Voe-Tx-rLC" id="8yM-qH-ElY"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gA0-5W-B5f">
+                        <rect key="frame" x="117" y="61" width="59" height="32"/>
+                        <buttonCell key="cell" type="push" title="▶️" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="oy0-Wa-DA7">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".AppleColorEmojiUI"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="rightAction:" target="Voe-Tx-rLC" id="LZc-bK-jHu"/>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LR2-8Y-FuB">
+                        <rect key="frame" x="14" y="61" width="59" height="32"/>
+                        <buttonCell key="cell" type="push" title="◀️" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="PNE-cA-fL5">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" size="13" name=".AppleColorEmojiUI"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="leftAction:" target="Voe-Tx-rLC" id="SQX-JT-nVp"/>
+                        </connections>
+                    </button>
+                    <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KyF-Ly-dXN">
+                        <rect key="frame" x="346" y="287" width="24" height="96"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="hjQ-XM-ySS"/>
+                            <constraint firstAttribute="height" constant="91" id="yup-4L-Kj5"/>
+                        </constraints>
+                        <sliderCell key="cell" alignment="left" maxValue="1" tickMarkPosition="right" numberOfTickMarks="10" sliderType="linear" id="G1V-Ep-SUx"/>
+                        <connections>
+                            <action selector="liftAction:" target="Voe-Tx-rLC" id="ZqX-jS-EKn"/>
+                        </connections>
+                    </slider>
+                    <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Dr-Vc-3sA">
+                        <rect key="frame" x="176" y="17" width="24" height="118"/>
+                        <sliderCell key="cell" alignment="left" maxValue="300" doubleValue="90" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="9ZY-Pp-hdR"/>
+                    </slider>
+                    <slider horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5fR-xT-Suv">
+                        <rect key="frame" x="376" y="287" width="24" height="96"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="AV6-UH-B1S"/>
+                            <constraint firstAttribute="height" constant="91" id="lBV-hm-dTa"/>
+                        </constraints>
+                        <sliderCell key="cell" alignment="left" maxValue="1" tickMarkPosition="right" numberOfTickMarks="10" sliderType="linear" id="o94-8E-PRq"/>
+                        <connections>
+                            <action selector="tiltAction:" target="Voe-Tx-rLC" id="d33-6H-omQ"/>
+                        </connections>
+                    </slider>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="gA0-5W-B5f" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="1t2-H3-bqi"/>
+                    <constraint firstItem="KyF-Ly-dXN" firstAttribute="leading" secondItem="Nnb-wn-g7V" secondAttribute="trailing" constant="8" id="3wY-zG-2LT"/>
+                    <constraint firstAttribute="bottom" secondItem="2Dr-Vc-3sA" secondAttribute="bottom" constant="20" id="5Ef-ce-8MD"/>
+                    <constraint firstItem="2Dr-Vc-3sA" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="8" id="EBz-x7-reI"/>
+                    <constraint firstItem="5fR-xT-Suv" firstAttribute="centerY" secondItem="KyF-Ly-dXN" secondAttribute="centerY" id="FKj-OT-xP5"/>
+                    <constraint firstItem="gA0-5W-B5f" firstAttribute="leading" secondItem="P8B-ym-zT8" secondAttribute="trailing" constant="6" id="J1r-vU-A8g"/>
+                    <constraint firstItem="gA0-5W-B5f" firstAttribute="centerY" secondItem="LR2-8Y-FuB" secondAttribute="centerY" id="KJU-ed-bZI"/>
+                    <constraint firstItem="Nnb-wn-g7V" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="KPV-zq-4HS"/>
+                    <constraint firstItem="LR2-8Y-FuB" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="M3I-su-Kqz"/>
+                    <constraint firstItem="egv-Nd-jhy" firstAttribute="leading" secondItem="LR2-8Y-FuB" secondAttribute="trailing" constant="3" id="Qmz-xV-weI"/>
+                    <constraint firstItem="5fR-xT-Suv" firstAttribute="leading" secondItem="KyF-Ly-dXN" secondAttribute="trailing" constant="8" id="e5G-vK-xzB"/>
+                    <constraint firstItem="egv-Nd-jhy" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="30" id="gg2-Bq-vkT"/>
+                    <constraint firstItem="LR2-8Y-FuB" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="k19-TD-1vD"/>
+                    <constraint firstItem="P8B-ym-zT8" firstAttribute="top" secondItem="LR2-8Y-FuB" secondAttribute="bottom" constant="-3" id="nSR-fN-RUT"/>
+                    <constraint firstItem="KyF-Ly-dXN" firstAttribute="leading" secondItem="Nnb-wn-g7V" secondAttribute="trailing" constant="8" id="oW6-mm-AKA"/>
+                    <constraint firstItem="Nnb-wn-g7V" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="oc8-F0-ZjO"/>
+                    <constraint firstItem="P8B-ym-zT8" firstAttribute="leading" secondItem="LR2-8Y-FuB" secondAttribute="trailing" constant="3" id="q0U-dB-u1o"/>
+                    <constraint firstItem="2Dr-Vc-3sA" firstAttribute="leading" secondItem="gA0-5W-B5f" secondAttribute="trailing" constant="8" id="rN3-1Y-KXA"/>
+                    <constraint firstItem="KyF-Ly-dXN" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="wj6-8n-BVw"/>
+                </constraints>
             </view>
+            <point key="canvasLocation" x="167" y="-122.5"/>
         </window>
     </objects>
 </document>
