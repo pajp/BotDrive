@@ -55,7 +55,6 @@
     self.apiURL = [NSURL URLWithString:@"http://raspberrypi3.local:4443/"];
     [self sendRequst:[self liftRequestWithHeight:0]];
     [self sendRequst:[self tiltRequestWithHeight:0.5]];
-    [self startStream];
 }
 
 - (NSURLRequest*)driveRequestWithLeftSpeed:(NSInteger) lspeed rightSpeed:(NSInteger) rspeed andDuration:(double) duration {
@@ -132,6 +131,10 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self sendRequst:[self imageRequestWIthImage:sender.image]];
     });
+}
+
+- (IBAction)stopStreamAction:(id)sender {
+    [self.cameraStreamTask cancel];
 }
 
 - (IBAction)refreshAction:(id)sender {
