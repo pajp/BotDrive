@@ -796,6 +796,13 @@
                             <action selector="stopStreamAction:" target="Voe-Tx-rLC" id="ssJ-Ha-Gby"/>
                         </connections>
                     </button>
+                    <switch horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" baseWritingDirection="leftToRight" alignment="left" translatesAutoresizingMaskIntoConstraints="NO" id="bYX-AV-TaB">
+                        <rect key="frame" x="247" y="109" width="42" height="24"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="headLightToggleAction:" target="Voe-Tx-rLC" id="4WJ-VA-IFA"/>
+                        </connections>
+                    </switch>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gA0-5W-B5f" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="1t2-H3-bqi"/>

@@ -57,6 +57,7 @@
     [self sendRequst:[self tiltRequestWithHeight:0.5]];
 }
 
+// MARK: request objects
 - (NSURLRequest*)driveRequestWithLeftSpeed:(NSInteger) lspeed rightSpeed:(NSInteger) rspeed andDuration:(double) duration {
     NSURL* driveURL = [NSURL URLWithString:@"drive" relativeToURL:self.apiURL];
     NSMutableURLRequest* driveRequest = [NSMutableURLRequest requestWithURL:driveURL];
@@ -110,6 +111,14 @@
     return driveRequest;
 }
 
+- (NSURLRequest*)headLightRequest:(BOOL) enabled{
+    NSURL* driveURL = [NSURL URLWithString:@"headlight" relativeToURL:self.apiURL];
+    NSMutableURLRequest* driveRequest = [NSMutableURLRequest requestWithURL:driveURL];
+    driveRequest.HTTPMethod = @"POST";
+    driveRequest.HTTPBody = [[NSString stringWithFormat:@"%d", enabled] dataUsingEncoding:NSASCIIStringEncoding];
+    return driveRequest;
+}
+
 - (void)sendRequst:(NSURLRequest*) driveRequest {
     NSURLSessionDataTask* driveTask = [[NSURLSession sharedSession] dataTaskWithRequest:driveRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"drive task response: %@", response);
@@ -126,6 +135,12 @@
     [tak resume];
     self.cameraStreamTask = tak;
 }
+
+// MARK: UI actions
+- (IBAction)headLightToggleAction:(NSSwitch*)sender {
+    [self sendRequst:[self headLightRequest:sender.state == NSControlStateValueOn]];
+}
+
 
 - (IBAction)displayImageAction:(NSImageView*)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
