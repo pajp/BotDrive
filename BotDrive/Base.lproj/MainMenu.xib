@@ -11,10 +11,13 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
                 <outlet property="cameraView" destination="Nnb-wn-g7V" id="SL1-NX-m6L"/>
+                <outlet property="durationSlider" destination="pEJ-05-gJt" id="iOH-7T-gsb"/>
+                <outlet property="headSlider" destination="5fR-xT-Suv" id="vOY-8f-eza"/>
+                <outlet property="liftSlider" destination="KyF-Ly-dXN" id="mJ1-mf-U5i"/>
                 <outlet property="speedKnob" destination="2Dr-Vc-3sA" id="lTc-JZ-V4b"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -763,7 +766,7 @@
                     </slider>
                     <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Dr-Vc-3sA">
                         <rect key="frame" x="134" y="18" width="24" height="117"/>
-                        <sliderCell key="cell" alignment="left" maxValue="300" doubleValue="90" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="9ZY-Pp-hdR"/>
+                        <sliderCell key="cell" alignment="left" maxValue="300" doubleValue="100" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="9ZY-Pp-hdR"/>
                     </slider>
                     <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LIb-Ks-NaR">
                         <rect key="frame" x="385" y="17" width="134" height="38"/>
@@ -803,6 +806,10 @@
                             <action selector="headLightToggleAction:" target="Voe-Tx-rLC" id="4WJ-VA-IFA"/>
                         </connections>
                     </switch>
+                    <slider horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pEJ-05-gJt">
+                        <rect key="frame" x="164" y="18" width="24" height="117"/>
+                        <sliderCell key="cell" alignment="left" maxValue="3" doubleValue="1" tickMarkPosition="right" numberOfTickMarks="10" allowsTickMarkValuesOnly="YES" sliderType="linear" id="bhL-yN-rZX"/>
+                    </slider>
                 </subviews>
                 <constraints>
                     <constraint firstItem="gA0-5W-B5f" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="1t2-H3-bqi"/>
@@ -811,6 +818,7 @@
                     <constraint firstItem="ORc-Bj-lN5" firstAttribute="centerY" secondItem="DXi-2A-M4R" secondAttribute="centerY" id="38o-48-MpV"/>
                     <constraint firstItem="KyF-Ly-dXN" firstAttribute="leading" secondItem="Nnb-wn-g7V" secondAttribute="trailing" constant="8" id="3wY-zG-2LT"/>
                     <constraint firstItem="ORc-Bj-lN5" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="8" id="4Ro-ab-hwK"/>
+                    <constraint firstItem="pEJ-05-gJt" firstAttribute="leading" secondItem="2Dr-Vc-3sA" secondAttribute="trailing" constant="8" id="A2P-a0-CSL"/>
                     <constraint firstItem="2Dr-Vc-3sA" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="8" id="EBz-x7-reI"/>
                     <constraint firstItem="5fR-xT-Suv" firstAttribute="centerY" secondItem="KyF-Ly-dXN" secondAttribute="centerY" id="FKj-OT-xP5"/>
                     <constraint firstItem="gA0-5W-B5f" firstAttribute="leading" secondItem="P8B-ym-zT8" secondAttribute="trailing" constant="6" id="J1r-vU-A8g"/>
@@ -818,12 +826,14 @@
                     <constraint firstItem="Nnb-wn-g7V" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="KPV-zq-4HS"/>
                     <constraint firstItem="LR2-8Y-FuB" firstAttribute="top" secondItem="egv-Nd-jhy" secondAttribute="bottom" constant="1" id="M3I-su-Kqz"/>
                     <constraint firstAttribute="bottom" secondItem="LIb-Ks-NaR" secondAttribute="bottom" constant="20" id="N7Y-ZH-AOn"/>
+                    <constraint firstItem="pEJ-05-gJt" firstAttribute="top" secondItem="2Dr-Vc-3sA" secondAttribute="top" id="NX3-bA-MUJ"/>
                     <constraint firstItem="egv-Nd-jhy" firstAttribute="leading" secondItem="LR2-8Y-FuB" secondAttribute="trailing" constant="3" id="Qmz-xV-weI"/>
                     <constraint firstAttribute="trailing" secondItem="LIb-Ks-NaR" secondAttribute="trailing" constant="20" id="bhY-Qc-fU0"/>
                     <constraint firstItem="5fR-xT-Suv" firstAttribute="leading" secondItem="KyF-Ly-dXN" secondAttribute="trailing" constant="8" id="e5G-vK-xzB"/>
                     <constraint firstItem="egv-Nd-jhy" firstAttribute="top" secondItem="Nnb-wn-g7V" secondAttribute="bottom" constant="30" id="gg2-Bq-vkT"/>
                     <constraint firstItem="LR2-8Y-FuB" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="k19-TD-1vD"/>
                     <constraint firstItem="P8B-ym-zT8" firstAttribute="top" secondItem="LR2-8Y-FuB" secondAttribute="bottom" constant="-3" id="nSR-fN-RUT"/>
+                    <constraint firstItem="pEJ-05-gJt" firstAttribute="bottom" secondItem="2Dr-Vc-3sA" secondAttribute="bottom" id="nYJ-V7-d0Q"/>
                     <constraint firstItem="ORc-Bj-lN5" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2Dr-Vc-3sA" secondAttribute="trailing" constant="20" id="oRy-ch-LxZ"/>
                     <constraint firstItem="KyF-Ly-dXN" firstAttribute="leading" secondItem="Nnb-wn-g7V" secondAttribute="trailing" constant="8" id="oW6-mm-AKA"/>
                     <constraint firstItem="Nnb-wn-g7V" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="20" id="oc8-F0-ZjO"/>

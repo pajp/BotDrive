@@ -52,10 +52,23 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     ((DLLBotWindow*)self.window).appDelegate = self;
-    self.apiURL = [NSURL URLWithString:@"http://raspberrypi3.local:4443/"];
-    [self sendRequst:[self liftRequestWithHeight:0]];
-    [self sendRequst:[self tiltRequestWithHeight:0.5]];
+    NSError* error;
+    NSData* data = [NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/.boturl", NSHomeDirectory()] options:0 error:&error];
+    if (!data) {
+        NSLog(@"Error reading bot URL: %@", error);
+        [self sadStatus];
+        return;
+    }
+    NSString* apiURLString = [[NSString stringWithUTF8String:data.bytes] stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceAndNewlineCharacterSet];
+    self.apiURL = [NSURL URLWithString:apiURLString];;
+    if (!self.apiURL) {
+        NSLog(@"Failed to parse URL from %@", apiURLString);
+        [self sadStatus];
+        return;
+    }
+    [self updatestatus];
 }
+
 
 // MARK: request objects
 - (NSURLRequest*)driveRequestWithLeftSpeed:(NSInteger) lspeed rightSpeed:(NSInteger) rspeed andDuration:(double) duration {
@@ -86,6 +99,11 @@
     req.HTTPMethod = @"POST";
     req.HTTPBody = pngData;
     return req;
+}
+
+- (NSURLRequest*)statusRequest {
+    NSURL* driveURL = [NSURL URLWithString:@"status" relativeToURL:self.apiURL];
+    return [NSMutableURLRequest requestWithURL:driveURL];
 }
 
 - (NSURLRequest*)liftRequestWithHeight:(float) height{
@@ -124,6 +142,64 @@
         NSLog(@"drive task response: %@", response);
     }];
     [driveTask resume];
+}
+
+- (void)sadStatus {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.window.title = @"BotDrive 🥴";
+    });
+}
+
+- (void)happyStatus {
+    dispatch_async(dispatch_get_main_queue(), ^{
+         self.window.title = @"BotDrive ✅";
+     });
+}
+
+- (void)updatestatus {
+    NSURLSessionDataTask* statusTask = [[NSURLSession sharedSession] dataTaskWithRequest:[self statusRequest] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self performSelector:@selector(updatestatus) withObject:nil afterDelay:4.0];
+        });
+        if (!data) {
+            NSLog(@"no status data!");
+            if (error) {
+                NSLog(@"status request error: %@", error);
+                [self sadStatus];
+            }
+            return;
+        }
+        NSError* jsonError;
+        NSDictionary* status = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        if (!status) {
+            NSLog(@"Error: %@", jsonError);
+            return;
+        }
+        [self happyStatus];
+ 
+        //NSLog(@"*** got status: %@", status);
+        [self updateStatusFrom:status];
+    }];
+    [statusTask resume];
+}
+
+- (void)updateStatusFrom:(NSDictionary*) status {
+    double headMax = [status[@"head_angle_max_rad"] doubleValue];
+    double headMin = [status[@"head_angle_min_rad"] doubleValue];
+    double headCurrent = [status[@"head_angle_rad"] doubleValue];
+    double headSpan = headMax - headMin;
+    double liftMax = [status[@"lift_height_max_mm"] doubleValue];
+    double liftMin = [status[@"lift_height_min_mm"] doubleValue];
+    double liftCurrent = [status[@"lift_height_mm"] doubleValue];
+    double liftSpan = liftMax - liftMin;
+    
+    double liftFraction = liftSpan / (liftCurrent - liftMin);
+    double headFraction = headSpan / (headCurrent - headMin);
+/*
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.headSlider.doubleValue = headFraction;
+        self.liftSlider.doubleValue = liftFraction;
+    });*/
 }
 
 - (void)startStream {
@@ -170,22 +246,22 @@
 
 - (IBAction)upAction:(id)sender {
     NSLog(@"speed: %d", self.speedKnob.intValue);
-    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:self.speedKnob.intValue rightSpeed:self.speedKnob.intValue andDuration:1];
+    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:self.speedKnob.intValue rightSpeed:self.speedKnob.intValue andDuration:self.durationSlider.floatValue];
     [self sendRequst:driveRequest];
 }
 
 - (IBAction)rightAction:(id)sender {
-    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:self.speedKnob.intValue rightSpeed:-(self.speedKnob.intValue) andDuration:.3];
+    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:self.speedKnob.intValue rightSpeed:-(self.speedKnob.intValue) andDuration:self.durationSlider.floatValue/3.0];
     [self sendRequst:driveRequest];
 }
 
 - (IBAction)downAction:(id)sender {
-    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:-(self.speedKnob.intValue) rightSpeed:-(self.speedKnob.intValue) andDuration:1];
+    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:-(self.speedKnob.intValue) rightSpeed:-(self.speedKnob.intValue) andDuration:self.durationSlider.floatValue];
     [self sendRequst:driveRequest];
 }
 
 - (IBAction)leftAction:(id)sender {
-    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:-(self.speedKnob.intValue) rightSpeed:self.speedKnob.intValue andDuration:.3];
+    NSURLRequest* driveRequest = [self driveRequestWithLeftSpeed:-(self.speedKnob.intValue) rightSpeed:self.speedKnob.intValue andDuration:self.durationSlider.floatValue/3.0];
     [self sendRequst:driveRequest];
 }
 
